@@ -11,3 +11,6 @@ yarn-error.log*
 # Temporary build files
 dist/
 build/
+
+# Ignore environment file
+.env
