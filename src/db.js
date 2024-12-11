@@ -3,7 +3,7 @@ const { default: mongoose } = require('mongoose');
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(
-      'mongodb+srv://nbggaming0:todo_app_database@tododb.hhqnx.mongodb.net/todoApp?retryWrites=true&w=majority&appName=tododb'
+      `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}/${process.env.DB_NAME}?retryWrites=true&w=majority&appName=${process.env.DB_APP_NAME}`
     );
 
     console.log(`MongoDB Connected: ${conn.connection.host}`);

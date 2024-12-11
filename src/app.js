@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { default: errorHandler } = require('./middleware/errorHandler');
 const express = require('express');
 const todoRoutes = require('./routes/todoRoutes');
