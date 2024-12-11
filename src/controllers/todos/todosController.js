@@ -1,9 +1,11 @@
-const todos = require('../../global/data-todos');
+const Todo = require('../../model/Todo');
 const { createTodo } = require('../../utils/utils');
 
 const todosController = {
-  getAllTodos: (req, res, next) => {
+  getAllTodos: async (req, res, next) => {
     try {
+      const todos = await Todo.find();
+
       return res.status(200).json({
         status: 'success',
         message: 'Success get all todos',
@@ -16,10 +18,10 @@ const todosController = {
     }
   },
 
-  getTodoById: (req, res, next) => {
+  getTodoById: async (req, res, next) => {
     try {
       const { id } = req.params;
-      const todo = todos.find((todo) => todo.id === id);
+      const todo = await Todo.findOne({ _id: id });
       if (!todo) {
         const error = new Error('Todo not found!!');
         error.status = 404;
@@ -38,7 +40,7 @@ const todosController = {
     }
   },
 
-  addTodo: (req, res, next) => {
+  addTodo: async (req, res, next) => {
     try {
       const { todo: todoInput } = req.body;
       if (!todoInput) {
@@ -46,8 +48,7 @@ const todosController = {
         error.status = 400;
         return next(error);
       }
-      const newTodo = createTodo(todoInput);
-      todos.push(newTodo);
+      const newTodo = await createTodo(todoInput);
 
       return res.status(201).json({
         status: 'success',
@@ -61,11 +62,15 @@ const todosController = {
     }
   },
 
-  updateTodo: (req, res, next) => {
+  updateTodo: async (req, res, next) => {
     try {
       const { id } = req.params;
       const { todo: todoInput } = req.body;
-      const updatedTodo = todos.find((todo) => todo.id === id);
+      const updatedTodo = await Todo.findOneAndUpdate(
+        { _id: id },
+        { $set: { todo: todoInput } },
+        { new: true }
+      );
       if (!updatedTodo) {
         const error = new Error('Id todo not found!!');
         error.status = 404;
@@ -86,17 +91,15 @@ const todosController = {
     }
   },
 
-  deleteTodo: (req, res, next) => {
+  deleteTodo: async (req, res, next) => {
     try {
       const { id } = req.params;
-      const todoIndex = todos.findIndex((todo) => todo.id === id);
-      if (todoIndex === -1) {
+      const todoIndex = await Todo.findOneAndDelete({ _id: id });
+      if (!todoIndex) {
         const error = new Error('Todo not found!!');
         error.status = 404;
         return next(error);
       }
-
-      todos.splice(todoIndex, 1);
       return res.status(200).json({
         status: 'success',
         message: 'Success deleted todo',

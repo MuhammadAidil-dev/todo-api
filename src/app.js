@@ -1,8 +1,12 @@
 const { default: errorHandler } = require('./middleware/errorHandler');
 const express = require('express');
 const todoRoutes = require('./routes/todoRoutes');
+const connectDB = require('./db');
 const app = express();
 const port = 3000;
+
+// connect to database
+connectDB();
 
 // middleware to parse json
 app.use(express.json());
