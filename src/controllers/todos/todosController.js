@@ -77,8 +77,6 @@ const todosController = {
         return next(error);
       }
 
-      updatedTodo.todo = todoInput;
-      updatedTodo.updatedAt = new Date().toISOString();
       return res.status(200).json({
         status: 'success',
         message: 'Todo successfuly updated',
