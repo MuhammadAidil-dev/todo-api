@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { default: errorHandler } = require('./middleware/errorHandler');
 const express = require('express');
+const cors = require('cors');
 const todoRoutes = require('./routes/todoRoutes');
 const connectDB = require('./db');
 const app = express();
@@ -11,7 +12,13 @@ connectDB();
 
 // middleware to parse json
 app.use(express.json());
-
+app.use(
+  cors({
+    origin: process.env.APP_ORIGIN,
+    method: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 app.use('/todos', todoRoutes);
 
 // handle route not found (404)
