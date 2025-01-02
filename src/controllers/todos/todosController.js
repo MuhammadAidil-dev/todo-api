@@ -42,13 +42,13 @@ const todosController = {
 
   addTodo: async (req, res, next) => {
     try {
-      const { todo: todoInput } = req.body;
-      if (!todoInput) {
-        const error = new Error('field "todo" is required');
+      const { taskTitle } = req.body;
+      if (!taskTitle) {
+        const error = new Error('field "task title" is required');
         error.status = 400;
         return next(error);
       }
-      const newTodo = await createTodo(todoInput);
+      const newTodo = await createTodo(taskTitle);
 
       return res.status(201).json({
         status: 'success',
@@ -69,7 +69,7 @@ const todosController = {
       const updatedTodo = await Todo.findOneAndUpdate(
         { _id: id },
         { $set: { todo: todoInput } },
-        { new: true }
+        { new: true } // properti new digunakan agar yang direturn adalah value yang sudah diupdate
       );
       if (!updatedTodo) {
         const error = new Error('Id todo not found!!');

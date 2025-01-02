@@ -3,21 +3,26 @@ const Schema = mongoose.Schema;
 
 const TodoSchema = new Schema(
   {
-    _id: {
+    taskTitle: {
       type: String,
       required: true,
     },
-    todo: {
+    taskDescription: {
+      type: String,
+    },
+    taskPriority: {
       type: String,
       required: true,
+      enum: ['high', 'medium', 'low'],
+      default: 'low',
     },
-    isChecked: {
-      type: Boolean,
-      default: false,
+    taskImage: {
+      type: String,
     },
-    createdAt: {
-      type: Date,
-      default: new Date().toISOString(),
+    taskStatus: {
+      type: String,
+      enum: ['completed', 'in progres', 'not started'],
+      default: 'not started',
     },
   },
   { timestamps: true }
