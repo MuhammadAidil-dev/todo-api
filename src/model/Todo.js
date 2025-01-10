@@ -18,10 +18,11 @@ const TodoSchema = new Schema(
     },
     taskImage: {
       type: String,
+      default: '',
     },
     taskStatus: {
       type: String,
-      enum: ['completed', 'in progres', 'not started'],
+      enum: ['completed', 'in progress', 'not started'],
       default: 'not started',
     },
   },

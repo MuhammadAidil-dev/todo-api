@@ -42,19 +42,36 @@ const todosController = {
 
   addTodo: async (req, res, next) => {
     try {
-      const { taskTitle } = req.body;
+      const { taskTitle, taskPriority, taskDescription, taskStatus } = req.body;
+
+      const taskImage = req.file ? `/uploads/${req.file.filename}` : '';
       if (!taskTitle) {
         const error = new Error('field "task title" is required');
         error.status = 400;
         return next(error);
       }
-      const newTodo = await createTodo(taskTitle);
+      const objectTodo = {
+        taskTitle,
+        taskPriority,
+        taskDescription,
+        taskImage,
+        taskStatus,
+      };
+
+      const { error, todo } = await createTodo(objectTodo);
+
+      if (error) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'failed to create todo',
+        });
+      }
 
       return res.status(201).json({
         status: 'success',
         message: 'Success created todo',
         data: {
-          todo: newTodo,
+          todo,
         },
       });
     } catch (error) {
@@ -65,10 +82,10 @@ const todosController = {
   updateTodo: async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { todo: todoInput } = req.body;
+      const { taskTitle } = req.body;
       const updatedTodo = await Todo.findOneAndUpdate(
         { _id: id },
-        { $set: { todo: todoInput } },
+        { $set: { taskTitle } },
         { new: true } // properti new digunakan agar yang direturn adalah value yang sudah diupdate
       );
       if (!updatedTodo) {

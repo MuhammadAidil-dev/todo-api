@@ -1,7 +1,9 @@
 require('dotenv').config();
+
 const { default: errorHandler } = require('./middleware/errorHandler');
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const todoRoutes = require('./routes/todoRoutes');
 const connectDB = require('./db');
 const app = express();
@@ -19,6 +21,10 @@ app.use(
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
+
+// midleware handler file statis
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
 app.use('/todos', todoRoutes);
 
 // handle route not found (404)

@@ -1,5 +1,6 @@
 const express = require('express');
 const todosController = require('../controllers/todos/todosController');
+const upload = require('../middleware/uploadFileHandler');
 const routes = express.Router();
 
 // prefik : /todos
@@ -11,7 +12,7 @@ routes.get('/', todosController.getAllTodos);
 routes.get('/:id', todosController.getTodoById);
 
 // POST add new todo
-routes.post('/', todosController.addTodo);
+routes.post('/', upload.single('taskImage'), todosController.addTodo);
 
 // PUT update a todo by ID
 routes.put('/:id', todosController.updateTodo);
