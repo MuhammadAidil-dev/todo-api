@@ -15,7 +15,7 @@ routes.get('/:id', todosController.getTodoById);
 routes.post('/', upload.single('taskImage'), todosController.addTodo);
 
 // PUT update a todo by ID
-routes.put('/:id', todosController.updateTodo);
+routes.put('/:id', upload.single('fileImage'), todosController.updateTodo);
 
 // DELETE a todo by ID
 routes.delete('/:id', todosController.deleteTodo);

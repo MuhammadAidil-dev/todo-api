@@ -82,10 +82,14 @@ const todosController = {
   updateTodo: async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { taskTitle } = req.body;
+      const updateData = req.body;
+      const fileImage = req.file;
+      if (fileImage) {
+        updateData.taskImage = `/uploads/${fileImage.filename}`;
+      }
       const updatedTodo = await Todo.findOneAndUpdate(
         { _id: id },
-        { $set: { taskTitle } },
+        { $set: updateData },
         { new: true } // properti new digunakan agar yang direturn adalah value yang sudah diupdate
       );
       if (!updatedTodo) {
