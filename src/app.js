@@ -6,6 +6,7 @@ const cors = require('cors');
 const path = require('path');
 const todoRoutes = require('./routes/todoRoutes');
 const connectDB = require('./db');
+const existUploadsMiddleware = require('./middleware/existUploadsDirMiddleware');
 const app = express();
 const port = 3000;
 
@@ -21,6 +22,9 @@ app.use(
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
+
+// middleware untuk otomatis membuat folder uploads
+app.use(existUploadsMiddleware);
 
 // midleware handler file statis
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));

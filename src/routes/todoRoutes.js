@@ -1,6 +1,7 @@
 const express = require('express');
 const todosController = require('../controllers/todos/todosController');
 const upload = require('../middleware/uploadFileHandler');
+const deleteFileMiddleware = require('../middleware/deleteFileMiddleware');
 const routes = express.Router();
 
 // prefik : /todos
@@ -18,6 +19,6 @@ routes.post('/', upload.single('taskImage'), todosController.addTodo);
 routes.put('/:id', upload.single('fileImage'), todosController.updateTodo);
 
 // DELETE a todo by ID
-routes.delete('/:id', todosController.deleteTodo);
+routes.delete('/:id', deleteFileMiddleware, todosController.deleteTodo);
 
 module.exports = routes;

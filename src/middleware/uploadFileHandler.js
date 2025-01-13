@@ -2,16 +2,7 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 
-// otomatis membuat folder uploads
 const uploadsDir = path.join(__dirname, '../../uploads');
-try {
-  if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
-    console.log('Folder uploads has been created');
-  }
-} catch (error) {
-  console.error('Error creating uploads folder:', error);
-}
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
