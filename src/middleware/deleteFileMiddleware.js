@@ -13,18 +13,22 @@ const deleteFileMiddleware = async (req, res, next) => {
     }
 
     const filePath = path.join(__dirname, '../../', todo.taskImage);
-    if (fs.existsSync(filePath)) {
-      console.log('file exist');
-      fs.unlink(filePath, (err) => {
-        if (err) {
-          console.error('Error deleting file', err);
-        } else {
-          console.log('File deleted');
-        }
-      });
-    } else {
-      console.log('file not exist');
+    // hapus jika file berubah atau ketika task di delete
+    if (req.file || req.method === 'DELETE') {
+      if (fs.existsSync(filePath)) {
+        console.log('file exist');
+        fs.unlink(filePath, (err) => {
+          if (err) {
+            console.error('Error deleting file', err);
+          } else {
+            console.log('File deleted');
+          }
+        });
+      } else {
+        console.log('file not exist');
+      }
     }
+
     next();
   } catch (error) {
     next(error);

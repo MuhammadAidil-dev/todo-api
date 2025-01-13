@@ -1,5 +1,7 @@
 const Todo = require('../../model/Todo');
 const { createTodo } = require('../../utils/utils');
+const fs = require('fs');
+const path = require('path');
 
 const todosController = {
   getAllTodos: async (req, res, next) => {
@@ -85,6 +87,7 @@ const todosController = {
       const updateData = req.body;
       const fileImage = req.file;
       if (fileImage) {
+        // save the new file
         updateData.taskImage = `/uploads/${fileImage.filename}`;
       }
       const updatedTodo = await Todo.findOneAndUpdate(
