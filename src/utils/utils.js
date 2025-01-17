@@ -1,4 +1,5 @@
 const Todo = require('../model/Todo');
+const jwt = require('jsonwebtoken');
 
 const createTodo = async ({
   taskTitle,
@@ -18,4 +19,10 @@ const createTodo = async ({
   return { error: false, todo: todoObject };
 };
 
-module.exports = { createTodo };
+const createToken = (user) => {
+  const secretKey = process.env.JWT_SECRET;
+  const token = jwt.sign({ user }, secretKey, { expiresIn: '1h' });
+  return token;
+};
+
+module.exports = { createTodo, createToken };

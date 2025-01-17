@@ -5,8 +5,10 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const todoRoutes = require('./routes/todoRoutes');
+const userRoutes = require('./routes/userRoutes');
 const connectDB = require('./db');
 const existUploadsMiddleware = require('./middleware/existUploadsDirMiddleware');
+const authMiddleware = require('./middleware/authMiddleware');
 const app = express();
 const port = 3000;
 
@@ -29,7 +31,8 @@ app.use(existUploadsMiddleware);
 // midleware handler file statis
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
-app.use('/todos', todoRoutes);
+app.use('/todos', authMiddleware, todoRoutes);
+app.use('/users', userRoutes);
 
 // handle route not found (404)
 app.use((req, res, next) => {
