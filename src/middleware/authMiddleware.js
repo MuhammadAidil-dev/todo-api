@@ -10,9 +10,19 @@ const authMiddleware = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, secretKey);
+    console.log(decoded);
     req.user = decoded; //simpan payload ke req.user
     next();
   } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+      // Tangkap error saat token sudah expired
+      return res
+        .status(401)
+        .json({
+          status: 'error',
+          message: 'Access token expired, please login again',
+        });
+    }
     return res
       .status(401)
       .json({ status: 'error', message: 'Invalid access token' });

@@ -9,6 +9,9 @@ const routes = express.Router();
 // GET all todo
 routes.get('/', todosController.getAllTodos);
 
+// GET all todo filtered by user
+routes.get('/user/:userID', todosController.getTodoByUser);
+
 // GET specific todo by ID
 routes.get('/:id', todosController.getTodoById);
 

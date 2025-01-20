@@ -45,6 +45,7 @@ const todosController = {
   addTodo: async (req, res, next) => {
     try {
       const { taskTitle, taskPriority, taskDescription, taskStatus } = req.body;
+      const { user } = req.user;
 
       const taskImage = req.file ? `/uploads/${req.file.filename}` : '';
       if (!taskTitle) {
@@ -58,6 +59,7 @@ const todosController = {
         taskDescription,
         taskImage,
         taskStatus,
+        user: user._id, // menambahkan id user yang membuat todo
       };
 
       const { error, todo } = await createTodo(objectTodo);
@@ -80,7 +82,27 @@ const todosController = {
       next(error);
     }
   },
+  getTodoByUser: async (req, res, next) => {
+    try {
+      const { userID } = req.params;
+      const todosFiltered = await Todo.find({ user: userID });
+      if (!todosFiltered) {
+        return res
+          .status(404)
+          .json({ message: `Todo by userid : ${userID} not found!!` });
+      }
 
+      return res.status(200).json({
+        status: 'success',
+        message: 'Success get todo',
+        data: {
+          todosUser: todosFiltered,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
   updateTodo: async (req, res, next) => {
     try {
       const { id } = req.params;

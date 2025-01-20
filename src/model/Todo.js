@@ -25,6 +25,11 @@ const TodoSchema = new Schema(
       enum: ['completed', 'in progress', 'not started'],
       default: 'not started',
     },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
   },
   { timestamps: true }
 );

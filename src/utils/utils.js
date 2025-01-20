@@ -7,6 +7,7 @@ const createTodo = async ({
   taskDescription,
   taskImage,
   taskStatus,
+  user,
 }) => {
   const todoObject = await Todo.create({
     taskTitle,
@@ -14,6 +15,7 @@ const createTodo = async ({
     taskDescription,
     taskImage,
     taskStatus,
+    user,
   });
 
   return { error: false, todo: todoObject };
